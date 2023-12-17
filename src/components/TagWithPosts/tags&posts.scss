@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 60%;
+
+    h1 {
+      text-align: start;
+    }
+  }
+}
