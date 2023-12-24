@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 function TagsWithPost() {
   const dispatch = useDispatch();
   const { posts, tags } = useSelector((state) => state.posts);
+  const { comments } = useSelector((state) => state.posts);
+  console.log(comments)
   // post.items && tags.items получать getting
   const isPostLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
@@ -46,7 +48,7 @@ function TagsWithPost() {
               nameAndSurname={obj.user.name + ' ' + obj.user.surname}
               createdAt={obj.createdAt}
               viewsCount={obj.viewsCount}
-              commentsCount={3}
+              commentsCount={comments.text.length}
               tags={obj.tags}
               isEditable={userData?._id === obj.user._id}
             />

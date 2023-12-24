@@ -6,11 +6,13 @@ import { useParams } from 'react-router-dom';
 import { CommentsBlock } from '../components/CommentsBlock';
 import axios from '../axios';
 import ReactMarkdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 
 export const FullPost = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const { comments } = useSelector((state) => state.posts);
 
   React.useEffect(() => {
     axios
@@ -18,6 +20,7 @@ export const FullPost = () => {
       .then((res) => {
         setData(res.data);
         setIsLoading(false);
+        console.log('user', data);
       })
       .catch((err) => {
         console.warn(err);
@@ -40,7 +43,7 @@ export const FullPost = () => {
         nameAndSurname={data.user.name + ' ' + data.user.surname}
         createdAt={data.createdAt}
         viewsCount={data.viewsCount}
-        commentsCount={3}
+        commentsCount={comments.text.length}
         tags={data.tags}
         isFullPost>
         <ReactMarkdown children={data.text} />

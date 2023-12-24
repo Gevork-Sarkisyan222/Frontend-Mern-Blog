@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
@@ -20,12 +20,14 @@ export const Registration = () => {
     handleSubmit,
     setError,
     formState: { errors, isValid },
+    watch,
   } = useForm({
     defaultValues: {
       name: '',
       surname: '',
       email: '',
       password: '',
+      avatarUrl: '',
     },
     mode: 'onChange',
   });
@@ -44,7 +46,13 @@ export const Registration = () => {
     }
   };
 
-  console.log('auth', isAuth);
+  const avatarUrl = watch('avatarUrl');
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
   if (isAuth) {
     return <Navigate to="/" />;
@@ -56,29 +64,44 @@ export const Registration = () => {
         Создание аккаунта
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.avatar}>
-          <Avatar sx={{ width: 100, height: 100 }} />
-        </div>
-        <div style={{ display: 'flex', gap: '25px' }}>
-          <TextField
-            className={styles.field}
-            label="Имя"
-            fullWidth
-            type="text"
-            {...register('name', { required: 'Укажите имя' })}
-            error={Boolean(errors.name?.message)}
-            helperText={errors.name?.message}
+        <label htmlFor="fileInput" className={styles.avatar}>
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            alt="Avatar"
+            src={
+              selectedFile
+                ? URL.createObjectURL(selectedFile)
+                : errors.avatarUrl
+                ? '/broken-image.jpg'
+                : avatarUrl
+            }
           />
-          <TextField
-            className={styles.field}
-            label="Фамилия"
-            fullWidth
-            type="text"
-            {...register('surname', { required: 'Укажите фамилию' })}
-            error={Boolean(errors.surname?.message)}
-            helperText={errors.surname?.message}
-          />
-        </div>
+        </label>
+        <input
+          id="fileInput"
+          type="file"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+          accept="image/*"
+        />
+        <TextField
+          className={styles.field}
+          label="Имя"
+          fullWidth
+          type="text"
+          {...register('name', { required: 'Укажите имя' })}
+          error={Boolean(errors.name?.message)}
+          helperText={errors.name?.message}
+        />
+        <TextField
+          className={styles.field}
+          label="Фамилия"
+          fullWidth
+          type="text"
+          {...register('surname', { required: 'Укажите фамилию' })}
+          error={Boolean(errors.surname?.message)}
+          helperText={errors.surname?.message}
+        />
         <TextField
           className={styles.field}
           label="E-Mail"
@@ -96,6 +119,14 @@ export const Registration = () => {
           {...register('password', { required: 'Укажите пароль' })}
           error={Boolean(errors.password?.message)}
           helperText={errors.password?.message}
+        />
+        {/* Добавляем поле для URL аватара */}
+        <TextField
+          className={styles.field}
+          label="URL аватара"
+          fullWidth
+          type="text"
+          {...register('avatarUrl')}
         />
         <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
           Зарегистрироваться

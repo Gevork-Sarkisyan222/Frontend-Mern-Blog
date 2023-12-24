@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 
 import styles from './Header.module.scss';
@@ -6,10 +6,13 @@ import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectedAuth, logout } from '../../redux/slices/auth';
+import Avatar from '@mui/material/Avatar';
+
 
 export const Header = () => {
   const isAuth = useSelector(selectedAuth);
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.data);
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти с аккаунта?')) {
@@ -34,6 +37,7 @@ export const Header = () => {
                 <Button onClick={onClickLogout} variant="contained" color="error">
                   Выйти
                 </Button>
+                <Avatar sx={{right: '-20px', cursor: 'pointer'}} alt={userData.name} src={userData.avatarUrl} />
               </>
             ) : (
               <>

@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 export const Home = () => {
   const dispatch = useDispatch();
   const { posts, tags } = useSelector((state) => state.posts);
+  const { comments } = useSelector((state) => state.posts);
   // post.items && tags.items получать getting
   const [popularPosts, setPopularPosts] = useState([]);
   const [popular, setPopular] = useState(false);
@@ -54,7 +55,7 @@ export const Home = () => {
                   nameAndSurname={obj.user.name + ' ' + obj.user.surname}
                   createdAt={obj.createdAt}
                   viewsCount={obj.viewsCount}
-                  commentsCount={3}
+                  commentsCount={comments.text.length}
                   tags={obj.tags}
                   isEditable={userData?._id === obj.user._id}
                 />

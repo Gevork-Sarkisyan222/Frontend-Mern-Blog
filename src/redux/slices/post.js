@@ -15,6 +15,21 @@ export const fetchRemovePosts = createAsyncThunk('posts/fetchRemovePosts', async
   axios.delete(`/posts/${id}`);
 });
 
+// comments
+export const fetchGetComments = createAsyncThunk('posts/fetchGetComments', async () => {
+  const { data } = await axios.get('/posts/comments/all');
+  return data;
+});
+
+export const fetchCreateComments = createAsyncThunk('posts/fetchCreateComments', async (params) => {
+  const { data } = await axios.post('/posts/comments', params);
+  return data;
+});
+
+export const fetchRemoveComments = createAsyncThunk('posts/fetchRemoveComments', async (id) => {
+  axios.delete(`/posts/comments/${id}`);
+});
+
 const initialState = {
   posts: {
     items: [],
@@ -22,6 +37,10 @@ const initialState = {
   },
   tags: {
     items: [],
+    status: 'loading',
+  },
+  comments: {
+    text: [],
     status: 'loading',
   },
 };
@@ -60,6 +79,36 @@ export const postSlice = createSlice({
     // delete remove
     [fetchRemovePosts.pending]: (state, action) => {
       state.posts.items = state.posts.items.filter((obj) => obj._id !== action.meta.arg);
+    },
+    // comments get
+    [fetchGetComments.pending]: (state) => {
+      state.comments.text = [];
+      state.comments.status = 'loading';
+    },
+    [fetchGetComments.fulfilled]: (state, action) => {
+      state.comments.text = action.payload;
+      state.comments.status = 'loaded';
+    },
+    [fetchGetComments.rejected]: (state) => {
+      state.comments.text = [];
+      state.comments.status = 'error';
+    },
+    // comments create
+    [fetchCreateComments.pending]: (state) => {
+      state.comments.text = [];
+      state.comments.status = 'loading';
+    },
+    [fetchCreateComments.fulfilled]: (state, action) => {
+      state.comments.text = [...state.comments.text, action.payload];
+      state.comments.status = 'loaded';
+    },
+    [fetchCreateComments.rejected]: (state) => {
+      state.comments.text = [];
+      state.comments.status = 'error';
+    },
+    // delete comment
+    [fetchRemoveComments.pending]: (state, action) => {
+      state.comments.text = state.comments.text.filter((item) => item.id !== action.meta.arg);
     },
   },
 });
