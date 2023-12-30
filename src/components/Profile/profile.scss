@@ -1,0 +1,33 @@
+.Content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background: #ffff;
+
+  .left-content {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 100px;
+
+    .text-content {
+      margin-left: 18px;
+
+      span {
+        color: grey;
+      }
+    }
+  }
+
+  .right-content {
+    display: flex;
+    justify-content: flex-end;
+    padding: 100px;
+
+    .post-place {
+      overflow: scroll;
+      max-height: 400px;
+    }
+  }
+}

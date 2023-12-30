@@ -9,7 +9,7 @@ function TagsWithPost() {
   const dispatch = useDispatch();
   const { posts, tags } = useSelector((state) => state.posts);
   const { comments } = useSelector((state) => state.posts);
-  console.log(comments)
+  console.log(comments);
   // post.items && tags.items получать getting
   const isPostLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';

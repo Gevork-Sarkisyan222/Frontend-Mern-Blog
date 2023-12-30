@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './UserInfo.module.scss';
 import Avatar from '@mui/material/Avatar';
+import { format } from 'timeago.js';
 
 export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
   return (
@@ -13,7 +14,7 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
       />
       <div className={styles.userDetails}>
         <span className={styles.userName}>{fullName}</span>
-        <span className={styles.additional}>{additionalText}</span>
+        <span className={styles.additional}>{format(additionalText)}</span>
       </div>
     </div>
   );

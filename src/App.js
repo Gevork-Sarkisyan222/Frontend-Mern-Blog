@@ -7,6 +7,8 @@ import { Home, FullPost, Registration, AddPost, Login } from './pages';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchAuthMe, selectedAuth } from './redux/slices/auth';
 import TagsWithPost from './components/TagWithPosts/TagsWithPosts';
+import Profile from './components/Profile/Profile';
+import Chat from './components/Chat/Chat';
 
 function App() {
   const isAuth = useSelector(selectedAuth);
@@ -28,6 +30,8 @@ function App() {
           <Route path="/posts/:id/edit" element={<AddPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/general/chat" element={<Chat />} />
         </Routes>
       </Container>
     </>

@@ -3,11 +3,12 @@ import Button from '@mui/material/Button';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectedAuth, logout } from '../../redux/slices/auth';
 import Avatar from '@mui/material/Avatar';
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export const Header = () => {
   const isAuth = useSelector(selectedAuth);
@@ -19,6 +20,16 @@ export const Header = () => {
       dispatch(logout());
       localStorage.removeItem('token');
     }
+  };
+
+  // open menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -37,7 +48,27 @@ export const Header = () => {
                 <Button onClick={onClickLogout} variant="contained" color="error">
                   Выйти
                 </Button>
-                <Avatar sx={{right: '-20px', cursor: 'pointer'}} alt={userData.name} src={userData.avatarUrl} />
+                <Avatar
+                  onClick={handleClick}
+                  sx={{ right: '-20px', cursor: 'pointer' }}
+                  alt={userData.name}
+                  src={userData.avatarUrl}
+                />
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} to="/profile">
+                    <MenuItem onClick={handleClose}>Профиль</MenuItem>
+                  </Link>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} to="/general/chat">
+                    <MenuItem onClick={handleClose}>Общий чат</MenuItem>
+                  </Link>
+                </Menu>
               </>
             ) : (
               <>
